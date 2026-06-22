@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>도시인문학 연구 대시보드 | KCI 논문 분석</title>
+  <meta name="description" content="KCI에서 '도시인문학' 키워드로 검색한 논문 447편을 기반으로 연구 분야의 전체 양상을 관찰하는 인터랙티브 대시보드" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3/dist/chartjs-plugin-annotation.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2/dist/echarts-wordcloud.min.js"></script>
+  <script src="theme_data.js?v=2"></script>
+  <script src="line_data.js?v=2"></script>
+  <script src="network_data.js?v=2"></script>
+  <script src="essay_data.js?v=6"></script>
+  <script src="section45_data.js?v=2"></script>
+  <script src="visual_essay.js?v=4"></script>
+  <script src="app.js?v=9"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="dashboard-header" id="home-header">
+    <div class="header-inner">
+      <div class="header-title-group" style="text-align:center; flex:1;">
+        <h1 class="header-title">도시인문학 연구 대시보드</h1>
+        <p class="header-en-title">Urban Humanities Research Dashboard</p>
+        <p class="header-datasource">출처: KCI(한국학술지인용색인) &nbsp;·&nbsp; 검색어: 도시인문학 &nbsp;·&nbsp; 수집일: 2026. 04</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- 기말 대시보드 상세페이지 (Visual Essay) -->
+  <div id="detail-essay" class="detail-view" style="background: #f1f5f9; overflow-y: auto;">
+    <div class="detail-header" style="position: sticky; top: 0; z-index: 100;">
+      <div class="detail-header-inner">
+        
+        <h2 class="detail-title">기말과제: 왜 도시인문학은 파편화되었는가?</h2>
+      </div>
+    </div>
+    <div class="detail-content" style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+       <div style="margin-bottom: 4rem; text-align: center;">
+         <h1 style="font-size: 2.5rem; color: #0f172a; margin-bottom: 1rem; font-weight: 800;">도시인문학: 하나의 이름, 두 개의 지향점</h1>
+         <p style="font-size: 1.2rem; color: #475569; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+           본 시각적 에세이는 도시인문학이라는 분과가 왜 파편화되어 전개되었는지, 단일 플랫폼 아래 공존하는 두 이질적 연구 커뮤니티의 실태를 데이터를 통해 논증합니다.
+         </p>
+       </div>
+
+    <!-- ══════════════════════════════════════════
+         패널 01 | 문제의식 — 데이터가 '이상하다' (Visual Essay)
+    ══════════════════════════════════════════ -->
+    <section class="section problem-section" aria-label="문제의식">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-num">01</span>
+          지식 생산의 구조적 비대칭성
+        </h2>
+        <p class="section-desc">도시인문학 연구의 양적 팽창 이면에 존재하는 폐쇄적 지식 생산 구조</p>
+      </div>
+      
+      <!-- 2017년 비정상적 스파이크 (라인/영역 차트) -->
+      <div class="chart-card" style="margin-bottom: 1.5rem;">
+        <div class="chart-card-header">
+          <span class="chart-card-title">연도별 논문 생산 추이: 연구자 소속 기관별 분리</span>
+        </div>
+        <div id="essay-panel1-spike" style="width: 100%; height: 350px;"></div>
+      </div>
+
+      <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; width: 100%;">
+        <!-- 학술지 독점 현황 (패널 02에서 이동) -->
+        <div class="chart-card" style="margin-bottom: 0; flex: 3; min-width: 0;">
+          <div class="chart-card-header">
+            <span class="chart-card-title">학술지 독점 현황: 단일 학술지의 과반 점유</span>
+          </div>
+          <div style="display: flex; gap: 1rem; height: 350px; width: 100%;">
+            <div id="essay-panel2-donut" style="flex: 1; min-width: 0; height: 100%;"></div>
+            <div style="display: flex; flex-direction: column; flex: 1; min-width: 0; height: 100%;">
+              <div id="essay-panel2-bar" style="width: 100%; height: 60px;"></div>
+              <div id="essay-panel2-treemap" style="width: 100%; flex: 1; min-height: 0;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 새로운 연구자 소속 비중 패널 -->
+        <div class="chart-card" style="margin-bottom: 0; flex: 1; min-width: 0;">
+          <div class="chart-card-header">
+            <span class="chart-card-title" style="font-size: 0.95rem;">연구자 소속 비중</span>
+          </div>
+          <div id="essay-panel1-researcher-donut" style="width: 100%; height: 350px;"></div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+        <!-- 두 개의 세계: 반으로 갈라진 키워드 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">키워드 네트워크: 학술 의제의 단절과 교차</span>
+          </div>
+          <div id="essay-panel1-wc-split" style="width: 100%; height: 350px;"></div>
+        </div>
+
+        <!-- 이론가 인용 비교 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">주요 인용 이론가 대비: 철학 vs 지리학</span>
+          </div>
+          <div id="essay-panel1-theorists" style="width: 100%; height: 350px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         패널 02 | 검색어의 함정: 간판만 남은 학술지
+    ══════════════════════════════════════════ -->
+    <section class="section platform-section" aria-label="연구 의제의 파편화" style="margin-top: 5rem;">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-num">02</span>
+          학술지 지식 생산의 파편화 현상
+        </h2>
+        <p class="section-desc">단일 학술지 내 연구 의제의 상호 단절 실태 (핵심 관련어 누락 논문을 중심으로)</p>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+        
+        <!-- 유령 논문 막대 차트 및 화이트리스트 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">도시인문학 핵심 관련어 미포함 논문 점유율</span>
+          </div>
+          <div id="essay-panel2-horizontal-bar" style="width: 100%; height: 120px; margin-bottom: 1rem;"></div>
+          
+          <div style="background: #f8fafc; border-radius: 8px; padding: 1.2rem; border: 1px solid #e2e8f0;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: #475569; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span style="font-size: 1.1rem;">📌</span> 분석 필터: 도시인문학 핵심 관련어 30개 (공간·사상가·의제)
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">도시</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">공간</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">장소</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">지리</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">지역</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">로컬</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">건축</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">재생</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">마을</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">거리</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">경관</span>
+              <span style="background:#e0e7ff; color:#3730a3; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">공공</span>
+              
+              <span style="background:#fce7f3; color:#be185d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">벤야민</span>
+              <span style="background:#fce7f3; color:#be185d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">라투르</span>
+              <span style="background:#fce7f3; color:#be185d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">르페브르</span>
+              <span style="background:#fce7f3; color:#be185d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">하비</span>
+              <span style="background:#fce7f3; color:#be185d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">제이콥스</span>
+              <span style="background:#fce7f3; color:#be185d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">심멜</span>
+              
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">인문</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">공동체</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">커먼즈</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">공유지</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">모빌리티</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">인류세</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">생태</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">기후</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">이주</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">시민</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">네트워크</span>
+              <span style="background:#dcfce7; color:#15803d; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">포스트휴먼</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 유령 논문 진짜 키워드 버블 차트 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">핵심 관련어 미포함 논문군의 독자적 연구 주제 (키워드 빈도)</span>
+          </div>
+          <div id="essay-panel2-ghost-bubble" style="width: 100%; height: 400px;"></div>
+        </div>
+      </div>
+    </section>
+
+        <!-- ══════════════════════════════════════════
+         패널 03 | 학문 공동체의 부재 (피날레)
+    ══════════════════════════════════════════ -->
+    <section class="section finale-section" aria-label="담론의 인위적 교체" style="margin-top: 8rem; margin-bottom: 5rem;">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-num">03</span>
+          담론의 인위적 교체
+        </h2>
+        <p class="section-desc">국가 지원사업 프레임 전환에 따른 이론가 및 거대 담론의 일제 교체</p>
+      </div>
+
+
+
+      <!-- [삭제됨: 학술지 내향화 추이 패널 (데이터와 주장이 불일치하여 롤백)] -->
+
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 2rem;">
+        
+        <!-- 좌측 패널: 이론가 교체 꺾은선그래프 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">지원사업 전환에 따른 학술지 '도시인문학연구'의 이론가 교체</span>
+          </div>
+          <div id="essay-panel3-stream" style="width: 100%; height: 400px; padding: 1rem;"></div>
+        </div>
+
+        <!-- 우측 패널: 거대 담론 키워드 교차 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">지원사업 아젠다 전환에 따른 학술지 '도시인문학연구'의 거대 담론 키워드 교차</span>
+          </div>
+
+          <div id="essay-panel3-themes" style="width: 100%; height: 400px; padding: 1rem;"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         패널 04 | 학술 생태계의 고립과 변질
+    ══════════════════════════════════════════ -->
+    <section class="section finale-section" aria-label="학술 생태계의 고립과 변질" style="margin-top: 8rem; margin-bottom: 5rem;">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-num">04</span>
+          학술 생태계의 고립과 변질
+        </h2>
+        <p class="section-desc">학술지 내부에서 진정한 학문 공동체가 형성되지 못했다</p>
+      </div>
+
+      <!-- 패널 1: 투고자 풀의 변질 (전체 가로 폭) -->
+      <div class="chart-card" style="margin-bottom: 1.5rem;">
+        <div class="chart-card-header">
+          <span class="chart-card-title">『도시인문학연구』 투고자 풀의 변질: 국제 플랫폼에서 성과 매체로</span>
+        </div>
+        <div style="display: flex; height: 450px;">
+          <!-- 좌측: 차트 -->
+          <div id="essay-panel4-contributors" style="flex: 7; height: 100%;"></div>
+          <!-- 우측: 해외 논문 리스트 창 -->
+          <div style="flex: 3; height: 100%; border-left: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+            <div style="padding: 1rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #475569; font-size: 0.9rem;">해외 투고자 논문 리스트</div>
+            <div id="essay-panel4-foreign-list" style="flex: 1; overflow-y: auto; padding: 1rem; background: #fff;">
+              <div style="color: #94a3b8; font-size: 0.9rem; text-align: center; margin-top: 40%;">
+                그래프의 🔵 파란색 <b>해외 기관</b> 연도 점을 클릭하시면<br>해당 연도의 논문 목록이 표시됩니다.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 패널 2 & 패널 3 가로 배치 -->
+      <div style="display: flex; gap: 1.5rem; align-items: stretch;">
+        <!-- 패널 2: 연구자 간 인용 네트워크 및 단절 매트릭스 -->
+        <div class="chart-card" style="flex: 1.5; margin: 0; min-width: 0;">
+          <div class="chart-card-header">
+            <span class="chart-card-title">역대 사업 연구진 간 인용 네트워크 및 단절 매트릭스</span>
+          </div>
+          <div style="display: flex; gap: 1rem; align-items: stretch; height: 450px; padding: 1rem;">
+            <div id="essay-panel4-network" style="flex: 2; height: 100%; min-width: 0;"></div>
+            <div id="essay-panel4-matrix" style="flex: 1.2; height: 100%; min-width: 0;"></div>
+          </div>
+        </div>
+
+        <!-- 패널 3: 피인용 TOP 10 논문 -->
+        <div class="chart-card" style="flex: 1; margin: 0; min-width: 0;">
+          <div class="chart-card-header">
+            <span class="chart-card-title">피인용 TOP 10 논문의 실체: 담론 구심점 부재</span>
+          </div>
+          <div id="essay-panel4-topcited" style="width: 100%; height: 450px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         패널 05 | 뻗어나가지 못한 비전 (피날레)
+    ══════════════════════════════════════════ -->
+    <section class="section finale-section" aria-label="뻗어나가지 못한 비전" style="margin-top: 8rem; margin-bottom: 5rem;">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-num">05</span>
+          뻗어나가지 못한 비전
+        </h2>
+        <p class="section-desc">연구 성과는 16년 내내 전통 인문학 분과 안에 갇혀 있다</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+        <!-- 패널 1: 피인용 학술지 분야별 분포 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">전체 피인용 논문의 KCI 학술지 분야 분포</span>
+          </div>
+          <div id="essay-panel5-treemap" style="width: 100%; height: 400px;"></div>
+        </div>
+
+        <!-- 패널 2: 논문별 피인용의 전공 종속성 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title">주요 논문별 피인용 분야: 원 전공 분과에 종속</span>
+          </div>
+          <div id="essay-panel5-breakdown" style="width: 100%; height: 400px;"></div>
+        </div>
+      </div>
+    </section>
+
+    </div>
+  </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof initPanel01 === 'function') {
+          initPanel01();
+          initPanel02();
+          initPanel03();
+          initPanel04();
+          initPanel04Contributors();
+          initPanel04TopCited();
+          initPanel05Treemap();
+          initPanel05Breakdown();
+          initGhostPapersPanel();
+          initPanel01Bottom();
+        }
+      });
+    </script>
+    <div id="researcher-majors-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+    <div style="background: #fff; border-radius: 12px; width: 90%; max-width: 800px; padding: 2rem; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;">
+      <button onclick="document.getElementById('researcher-majors-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+      <div style="margin-bottom: 1.5rem; text-align: center;">
+        <h3 style="margin: 0; font-size: 1.25rem; color: #0f172a;">핵심 연구자 9인의 실제 전공과 '도시인문학' 연결 방식</h3>
+      </div>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left;">
+          <thead>
+            <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
+              <th style="padding: 12px; color: #1e293b;">연구자</th>
+              <th style="padding: 12px; color: #1e293b;">실제 연구 영역 (전공)</th>
+              <th style="padding: 12px; color: #1e293b;">'도시인문학'과의 연결 방식</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #3b82f6;">곽노완</td>
+              <td style="padding: 12px;">마르크스주의 정치경제학, 기본소득론</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«스마트공유<strong style="color:#ef4444;">도시</strong>와 <strong style="color:#ef4444;">도시</strong>기본소득의 비전»<br>«<strong style="color:#ef4444;">도시</strong>부동산수익의 공유와 기본소득»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #3b82f6;">권정임</td>
+              <td style="padding: 12px;">정치학, 정치철학</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«공유의 시대, 열리고 겹치는 공유<strong style="color:#ef4444;">도시</strong>의 비전»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #94a3b8;">홍용진</td>
+              <td style="padding: 12px;">프랑스 중세사 (백년전쟁, 필리프 6세)</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«분쟁 이후 <strong style="color:#ef4444;">도시</strong>에서 기억의 실행: 키르기스스탄 오쉬의 기념물을 중심으로»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #94a3b8;">김태연</td>
+              <td style="padding: 12px;">중국/중앙아시아 문화연구</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«<strong style="color:#ef4444;">도시</strong>, 유성기, 댄스홀 ― 1920~30년대 상하이 대중음악의 탄생»<br>«아스타나 <strong style="color:#ef4444;">도시</strong>풍경에 반영된 포스트소비에트 카자흐스탄 정체성»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #94a3b8;">정희원</td>
+              <td style="padding: 12px;">영미문학 비평</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«&lt;서울의 얼굴&gt;에 나타난 <strong style="color:#ef4444;">도시</strong>의 트라우마와 <strong style="color:#ef4444;">도시</strong> 주체»<br>«<strong style="color:#ef4444;">도시</strong> 속의 낯선 이들 - 디킨즈 산문에 나타난 불안한 낯섦»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #94a3b8;">오창룡</td>
+              <td style="padding: 12px;">프랑스 정치학</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«프랑스의 <strong style="color:#ef4444;">도시</strong> 분리와 인종 갈등 : 게토 분석을 중심으로»<br>«상황주의 인터내셔널의 <strong style="color:#ef4444;">도시</strong> 비판과 그 대안»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #10b981;">홍남희</td>
+              <td style="padding: 12px;">미디어·젠더 연구</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«플랫폼 <strong style="color:#ef4444;">도시</strong>의 기술-자본 체제와 <strong style="color:#ef4444;">도시</strong> 미디어로서의 무인매장»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #94a3b8;">유인혁</td>
+              <td style="padding: 12px;">한국 현대문학 (박완서, 웹소설)</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«<strong style="color:#ef4444;">도시</strong>를 해킹하기—저항의 <strong style="color:#ef4444;">공간</strong>적 실천»<br>«박완서 소설 『<strong style="color:#ef4444;">도시</strong>의 흉년』에 나타난 돌봄의 감옥»</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: bold; color: #10b981;">김은주</td>
+              <td style="padding: 12px;">페미니즘 철학 (해러웨이, 라투르)</td>
+              <td style="padding: 12px; line-height: 1.5; color: #475569;">«사물들의 플랫폼으로서 <strong style="color:#ef4444;">디지털 폴리스</strong>와 행위자 네트워크»<br>«<strong style="color:#ef4444;">디지털 폴리스</strong>의 정의와 커먼즈를 다시 사유하기»</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 해외 투고자 논문 상세 모달 -->
+  <div id="foreign-paper-detail-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15,23,42,0.6); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(4px);" onclick="if(event.target===this) this.style.display='none'">
+    <div style="background: #fff; width: 90%; max-width: 650px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); padding: 2rem; position: relative; max-height: 85vh; display: flex; flex-direction: column;">
+      <button onclick="document.getElementById('foreign-paper-detail-modal').style.display='none'" style="position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #94a3b8; line-height: 1;">&times;</button>
+      
+      <div style="margin-bottom: 1.5rem; padding-right: 2rem;">
+        <div style="display: inline-block; padding: 0.2rem 0.6rem; background: #eff6ff; color: #2563eb; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.5rem;" id="fp-modal-year">2009년</div>
+        <h3 id="fp-modal-title" style="font-size: 1.3rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; line-height: 1.4;">논문 제목</h3>
+        <p id="fp-modal-author-inst" style="font-size: 0.95rem; color: #475569;"><span style="color: #2563eb; font-weight: bold;">저자명</span> | 소속기관</p>
+      </div>
+      
+      <div style="flex: 1; overflow-y: auto; padding-right: 0.5rem;">
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.9rem; font-weight: bold; color: #1e293b; margin-bottom: 0.5rem; border-left: 3px solid #2563eb; padding-left: 0.5rem;">초록 (Abstract)</div>
+          <div id="fp-modal-abstract" style="font-size: 0.9rem; color: #475569; line-height: 1.6; background: #f8fafc; padding: 1rem; border-radius: 6px;"></div>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.9rem; font-weight: bold; color: #1e293b; margin-bottom: 0.5rem; border-left: 3px solid #10b981; padding-left: 0.5rem;">키워드 (Keywords)</div>
+          <div id="fp-modal-keyword" style="font-size: 0.9rem; color: #475569;"></div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; text-align: center;">
+        <a id="fp-modal-url" href="#" target="_blank" style="display: inline-block; padding: 0.6rem 1.5rem; background: #1e293b; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 0.95rem;">논문 원문 보기 (KCI)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP 10 피인용 논문 키워드 모달 -->
+  <div id="top10-paper-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15,23,42,0.6); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(4px);" onclick="if(event.target===this) this.style.display='none'">
+    <div style="background: #fff; width: 90%; max-width: 600px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); padding: 2rem; position: relative;">
+      <button onclick="document.getElementById('top10-paper-modal').style.display='none'" style="position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #94a3b8; line-height: 1;">&times;</button>
+      
+      <div style="margin-bottom: 1.5rem; padding-right: 2rem;">
+        <div style="display: inline-block; padding: 0.2rem 0.6rem; background: #fee2e2; color: #ef4444; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.5rem;" id="top10-modal-rank">피인용 1위 (66회)</div>
+        <h3 id="top10-modal-title" style="font-size: 1.3rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; line-height: 1.4;">논문 제목</h3>
+        <p id="top10-modal-author" style="font-size: 0.95rem; color: #475569; font-weight: bold;">저자명</p>
+      </div>
+      
+      <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ef4444;">
+        <h4 style="margin: 0 0 0.8rem 0; color: #1e293b; font-size: 1rem;">🏷️ 핵심 키워드</h4>
+        <div id="top10-modal-keywords" style="font-size: 0.95rem; color: #334155; line-height: 1.6; word-break: keep-all;">
+          <!-- 키워드 내용 -->
+        </div>
+      </div>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; text-align: center;">
+        * 저자가 KCI에 직접 등록한 공식 키워드입니다.
+      </div>
+    </div>
+  </div>
+
+  <div id="loyalty-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+    <div style="background: #fff; border-radius: 12px; width: 90%; max-width: 800px; padding: 2rem; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;">
+      <button onclick="document.getElementById('loyalty-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+      <div style="margin-bottom: 1.5rem; text-align: center;">
+        <h3 style="margin: 0; font-size: 1.25rem; color: #0f172a;">📌 학술지의 정거장화 (투고자 소속별 비교)</h3>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; color: #475569;">학술지 『도시인문학연구』 전체 투고자의 투고 횟수 분포 (내부 vs 외부)</p>
+      </div>
+      <div id="modal-loyalty-pie" style="width: 100%; height: 350px;"></div>
+      
+      <div style="margin-top: 2rem; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
+        <h3 style="margin: 0; font-size: 1.1rem; color: #0f172a;">📊 내부 연구자(서울시립대) 1회성 투고자 유입 추이</h3>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #475569;">초창기(등재 이전) 집중된 '단발성 참여' 현상</p>
+      </div>
+      <div id="modal-loyalty-line" style="width: 100%; height: 280px; margin-top: 1rem;"></div>
+    </div>
+  </div>
+
+  <div id="detail-kpi" class="detail-view hidden">
+    <div class="detail-header">
+      <div class="detail-header-inner">
+        <button class="back-btn" onclick="hideDetailView()">
+          <span class="back-arrow">←</span> 대시보드 홈으로
+        </button>
+        <div class="detail-header-title">
+          <span class="detail-badge">DEEP DIVE</span>
+          <h2>연구 생태계는 누가 유지하는가?</h2>
+          <p>KCI 논문 447편 · 저자 300명의 참여 패턴 분석</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <!-- 연구자 지속성 도넛 차트 -->
+      <div class="detail-card detail-main">
+        <div class="detail-card-header">
+          <h3>연구자 지속성 분포</h3>
+          <p>도시인문학 연구자 300명의 논문 출판 패턴</p>
+        </div>
+        <div class="detail-donut-layout">
+          <div class="detail-donut-wrap">
+            <canvas id="chart-ecosystem-donut" aria-label="연구자 지속성 도넛 차트"></canvas>
+            <div class="detail-donut-center">
+              <div class="ddc-num">300</div>
+              <div class="ddc-label">전체 저자</div>
+            </div>
+          </div>
+          <div class="detail-donut-legend">
+            <div class="eco-legend-item" id="eco-legend-one">
+              <div class="eco-legend-dot" style="background:#cbd5e1"></div>
+              <div class="eco-legend-info">
+                <div class="eco-legend-name">1회성 연구자</div>
+                <div class="eco-legend-sub">단 1편만 게재 후 퇴장</div>
+              </div>
+              <div class="eco-legend-stat">
+                <div class="eco-stat-num">236명</div>
+                <div class="eco-stat-pct">78.7%</div>
+              </div>
+            </div>
+            <div class="eco-legend-item" id="eco-legend-two">
+              <div class="eco-legend-dot" style="background:#93c5fd"></div>
+              <div class="eco-legend-info">
+                <div class="eco-legend-name">2회성 연구자</div>
+                <div class="eco-legend-sub">2편 게재 후 중단</div>
+              </div>
+              <div class="eco-legend-stat">
+                <div class="eco-stat-num">29명</div>
+                <div class="eco-stat-pct">9.7%</div>
+              </div>
+            </div>
+            <div class="eco-legend-item eco-legend-highlight" id="eco-legend-core">
+              <div class="eco-legend-dot" style="background:#2563eb"></div>
+              <div class="eco-legend-info">
+                <div class="eco-legend-name">핵심 코어 연구자</div>
+                <div class="eco-legend-sub">3편 이상 꾸준히 게재 — 마우스를 올려보세요</div>
+              </div>
+              <div class="eco-legend-stat">
+                <div class="eco-stat-num">35명</div>
+                <div class="eco-stat-pct">11.7%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 구분선 -->
+        <hr style="border:none; border-top:1px solid var(--border); margin:1.2rem 0 1rem;">
+
+        <!-- 저자 역할 미니바 테이블 (통합) -->
+        <div class="detail-card-header" style="margin-bottom:0.8rem;">
+          <h3>🔍 핵심 코어 연구자 — 저자 역할 분석</h3>
+          <p>상위 10명의 총 논문 편수 중 제1저자(단독) 비율</p>
+        </div>
+        <div class="author-bar-table" id="author-bar-table">
+          <!-- JS로 채움 -->
+        </div>
+
+
+      </div>
+
+      <!-- 우측 열 래퍼 -->
+      <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+        <!-- 신규 진입 vs 기존 연구자 -->
+      <div class="detail-card discourse-author-card">
+        <div class="detail-card-header">
+          <h3>👥 신규 진입 vs 기존 연구자 (연도별)</h3>
+          <p>매년 처음 등장한 연구자(신규)와 이전에도 발표한 연구자(기존)의 비율</p>
+        </div>
+        <div style="position: relative; width: 100%; height: 320px;">
+          <canvas id="chart-author-entry"></canvas>
+        </div>
+      </div>
+      
+      <!-- 1회성 연구자 비율 차이 (바 차트) -->
+      <div class="detail-card loyalty-card" id="loyalty-card" style="height: 400px; display: flex; flex-direction: column;">
+        <div class="detail-card-header" style="margin-bottom: 0.5rem;">
+          <h3>📌 연구 집단별 1회성 연구자 비율</h3>
+          <p>서울시립대 소속 vs 외부 소속 연구자의 단발성 참여 비율 비교</p>
+        </div>
+        <div id="loyalty-bar-chart" style="flex: 1; width: 100%; min-height: 250px;"></div>
+      </div>
+
+        </div>
+      <!-- // 우측 열 래퍼 끝 -->
+
+    </div><!-- /detail-body -->
+  </div><!-- /detail-kpi -->
+
+</body>
+</html>
