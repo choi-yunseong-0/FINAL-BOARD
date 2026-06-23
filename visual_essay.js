@@ -917,11 +917,11 @@ function initPanel01Bottom() {
       legend: { bottom: 0, data: ['서울시립대 인용', '타 기관 인용'], textStyle: { fontSize: 12 } },
       grid: { left: '3%', right: '4%', bottom: '15%', top: '10%', containLabel: true },
       xAxis: { type: 'value', show: false },
-      yAxis: { type: 'category', data: ['라깡', '라투르', '마르크스', '벤야민', '해러웨이', '르페브르', '하비'].reverse(), axisLabel: { fontSize: 12, fontWeight: 'bold', color: '#334155' }, axisLine: { show: false }, axisTick: { show: false } },
+      yAxis: { type: 'category', data: ['라깡', '라투르', '마르크스', '벤야민', '푸코', '해러웨이', '르페브르', '하비'].reverse(), axisLabel: { fontSize: 12, fontWeight: 'bold', color: '#334155' }, axisLine: { show: false }, axisTick: { show: false } },
       color: ['#3b82f6', '#ef4444'],
       series: [
-        { name: '서울시립대 인용', type: 'bar', stack: 'total', label: { show: true, position: 'inside' }, itemStyle: { borderRadius: [4, 0, 0, 4] }, data: [4, 6, 13, 5, 6, 3, 5].reverse() },
-        { name: '타 기관 인용', type: 'bar', stack: 'total', label: { show: true, position: 'inside' }, itemStyle: { borderRadius: [0, 4, 4, 0] }, data: [1, 1, 4, 16, 2, 3, 5].reverse() }
+        { name: '서울시립대 인용', type: 'bar', stack: 'total', label: { show: true, position: 'inside' }, itemStyle: { borderRadius: [4, 0, 0, 4] }, data: [4, 6, 13, 5, 4, 6, 3, 5].reverse() },
+        { name: '타 기관 인용', type: 'bar', stack: 'total', label: { show: true, position: 'inside' }, itemStyle: { borderRadius: [0, 4, 4, 0] }, data: [1, 1, 4, 16, 21, 2, 3, 5].reverse() }
       ]
     });
     
