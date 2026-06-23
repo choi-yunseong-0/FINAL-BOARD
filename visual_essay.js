@@ -694,7 +694,13 @@ function initPanel05Treemap() {
   if (!dom || typeof CITATION_FIELD_DATA === 'undefined') return;
   const chart = echarts.init(dom);
   chart.setOption({
-    tooltip: { formatter: '{b}: {c}건' },
+    tooltip: { 
+      formatter: function(params) {
+        const total = 152;
+        const pct = ((params.value / total) * 100).toFixed(1);
+        return `${params.name}<br/>${params.value}건 (${pct}%)`;
+      }
+    },
     series: [{
       type: 'treemap',
       left: '2%', right: '2%', top: '2%', bottom: '2%',
@@ -1479,7 +1485,14 @@ window.showTopCitingPapersModal = function(paperName, papersList, topKey) {
       if (!treeChart) treeChart = echarts.init(treeDom);
       
       treeChart.setOption({
-        tooltip: { formatter: '{b}: {c}건' },
+        tooltip: { 
+          formatter: function(params) {
+            const dataArr = TREEMAP_DATA[topKey];
+            const total = dataArr.reduce((sum, item) => sum + item.value, 0);
+            const pct = ((params.value / total) * 100).toFixed(1);
+            return `${params.name}<br/>${params.value}건 (${pct}%)`;
+          }
+        },
         color: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#64748b'],
         series: [{
           name: '분야별 비중',
