@@ -338,10 +338,7 @@ const CITATION_FIELD_DATA = [
   { name: '경제학', value: 2, category: 'other' },
   { name: '인문지리학', value: 1, category: 'urban' },
   { name: '건축공학', value: 1, category: 'urban' },
-  { name: '공학일반', value: 1, category: 'urban' },
-  { name: '도시개발/계획', value: 1, category: 'urban' },
-  { name: '실내환경디자인', value: 1, category: 'urban' },
-  { name: '기타(17개 분야)', value: 19, category: 'other' }
+  { name: '기타(20개 분야)', value: 22, category: 'other' }
 ];
 
 // [섹션 05 패널 2] 논문별 피인용 분포
