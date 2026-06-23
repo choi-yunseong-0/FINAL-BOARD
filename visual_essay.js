@@ -197,8 +197,8 @@ function initPanel01() {
           radius: ['15%', '40%'],
           center: ['50%', '45%'],
           itemStyle: { borderRadius: 2, borderColor: '#fff', borderWidth: 2 },
-          label: { show: true, position: 'inner', formatter: '{b}\n{d}%', fontSize: 10, fontWeight: 'bold', color: '#fff', textBorderColor: 'rgba(0,0,0,0.3)', textBorderWidth: 1 },
-          data: [ { name: '서울시립대', value: 15 }, { name: '타 기관', value: 135 } ]
+          label: { show: true, position: 'inner', formatter: '{b}\n{c}명', fontSize: 10, fontWeight: 'bold', color: '#fff', textBorderColor: 'rgba(0,0,0,0.3)', textBorderWidth: 1 },
+          data: [ { name: '서울시립대', value: 70 }, { name: '타 기관', value: 230 } ]
         },
         {
           name: '논문 수 비중 (생산량)',
