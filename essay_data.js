@@ -409,8 +409,8 @@ const ESSAY_DATA = {
 
 const SECTION2_DATA = {
   total_papers: 447,
-  with_keyword: 353,
-  without_keyword: 94,
+  with_keyword: 354,
+  without_keyword: 93,
   ghost_keywords: [
     { name: '기본소득', value: 4 },
     { name: '아리스토텔레스', value: 2 },
@@ -430,7 +430,6 @@ const SECTION2_DATA = {
     { name: 'Adventures of Huckleberry Finn', value: 1 },
     { name: 'Green Book', value: 1 },
     { name: 'Deep South', value: 1 },
-    { name: 'urban humanities', value: 1 },
     { name: 'racialized space', value: 1 },
     { name: 'road movie', value: 1 },
     { name: '계산하는 친족', value: 1 },

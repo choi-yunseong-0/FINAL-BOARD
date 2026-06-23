@@ -282,10 +282,10 @@ const CITATION_MATRIX_DATA = {
   // y: [from UOS, from Non-UOS], x: [to UOS, to Non-UOS]
   // data format: [x, y, value]
   data: [
-    [0, 1, 64], // from UOS to UOS
-    [1, 1, 12], // from UOS to Non-UOS
-    [0, 0, 21], // from Non-UOS to UOS
-    [1, 0, 55]  // from Non-UOS to Non-UOS
+    [1, 1, 64], // from UOS to UOS
+    [0, 1, 12], // from UOS to Non-UOS
+    [1, 0, 21], // from Non-UOS to UOS
+    [0, 0, 55]  // from Non-UOS to Non-UOS
   ]
 };
 
