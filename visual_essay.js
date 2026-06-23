@@ -678,7 +678,7 @@ function initPanel04TopCited() {
         const topKey = `top${actualIndex + 1}`;
         if (typeof TOP10_CITING_PAPERS !== 'undefined' && TOP10_CITING_PAPERS[topKey]) {
           const shortTitle = paper.title.split('\n')[0];
-          showTopCitingPapersModal(`${paper.author} - ${shortTitle}`, TOP10_CITING_PAPERS[topKey]);
+          showTopCitingPapersModal(`${paper.author} - ${shortTitle}`, TOP10_CITING_PAPERS[topKey], topKey);
         } else {
           alert('해당 논문의 인용 데이터가 없습니다.');
         }
